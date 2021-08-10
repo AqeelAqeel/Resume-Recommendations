@@ -4,6 +4,37 @@ Using ML techniques to improve resume based on job descriptions
 # Project Motivations
 
 Returning a higher yield on job application submittals
+- gettign a 25% job match on jobscan,io
+
+
+# Check list to do
+
+coding needs
+- merging univ recruiter and recruiter column
+  DONE
+- understanding why % accuracy isnt improving with way more data
+- ask instructor why/how it is or isn't good to use cosine similarity for matching. us job descs. best techniques to get it. AFTER the keywordsa re done being setup. 
+  develop model outputs
+  - % match to titles, words needed to show, and top jobs currently a strong fit for
+      - need to grab the html or job desc OF that url ... yomp...
+  - - if a word is not in the 'set' of terms in the top 100 for each role... suggest it ... 
+
+Deployment needs:
+- have the dictionary of keywords for each occupation
+- inherit or have the functions available to process text input
+- neexd to understand how to convert input text into a single line for a simpler string to work with
+
+Front end web app dev
+
+web app model deployment
+
+slide deck / presentation
+    - images of web app scraper process
+    - images / flowchart for how the model works
+        - look up explanations of text classification for the various models to siphon
+
+  - get images of everything
+  - - cluster charts, plot distribtioins, wordClouds of each job
 
 
 # Working Notes
@@ -34,6 +65,11 @@ Roadblocks:
 - problems with my term frequency detection
 - * there seems to be an issue with some bigrams and unigrams feeding into the successive classes/labels...
 
+## Day 5: 8/6
+
+Finally got through pushing quite a bit of the needle forward in terms of progress. 
+- got situated with the dataset i was working with, a couple hundred descriptions for each class
+- ran some initial models, got higher test results and the top keywords for each occupation
 ```
 # 'chemical+engineer':
   . Most correlated unigrams:
