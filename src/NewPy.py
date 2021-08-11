@@ -16,7 +16,7 @@ class MyApp():
         self.load()
     
     def load(self):
-        self.model = pickle.load(open('../data/LogisticRegression.sav','rb'))
+        self.model = pickle.load(open('data/LogisticRegression.sav','rb'))
 
     def predict(self,resume):
         self.input_resume = resume
@@ -53,7 +53,8 @@ class MyApp():
             temp_list = []
             for word in description.split():
                 if word not in stopWords:
-                    temp_list.append(word.lower())
+                    print(word)
+                    temp_list.append(word.lower()) 
             cleaned_descriptions.append(' '.join(temp_list))
         return cleaned_descriptions
 
@@ -126,16 +127,16 @@ class MyApp():
 
                     elif check == "analy":
                         suggested_words[i] = "Variations of the word: analysis"
-
                     else:
                         suggested_words[i] = f"Variations of the word: {check}"
 
         print(suggested_words[:10])
         self.suggested_keywords = suggested_words[:10]
+        return suggested_words[:10]
     
     def get_suggested_job_listings(self):
         cv = CountVectorizer()
-        df = pd.read_pickle('../data/cleaned_job_descriptions.pickle')
+        df = pd.read_pickle('data/cleaned_job_descriptions.pickle')
         # index into df where it matches occupation
 
         desc_df = df[df['job_title']==self.occupation]
