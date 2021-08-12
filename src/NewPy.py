@@ -113,7 +113,7 @@ class MyApp():
                 contains_top_10 = True
                 print("good job, you've got the top 10 words in your resume!")
                 return []
-            if key_word not in self.resume:
+            if key_word not in self.input_resume:
                 suggested_words.append(key_word)
 
     # Look through list of needed words
@@ -144,14 +144,21 @@ class MyApp():
         desc_df=desc_df.drop(columns = ["Unnamed: 0", "Unnamed: 0.1"])
 
         descs = list(desc_df["job_desc"])
+        desc_df = desc_df.drop_duplicates(subset=['url'],keep='first')
 
         d = {}
+        
         for i in range(len(desc_df)):
             url = desc_df.iloc[i,1]
             desc = desc_df.iloc[i,2]
             desc_matrix = cv.fit_transform([self.input_resume,desc])
-            d[url] = cosine_similarity(desc_matrix)[0][1]    
+            if url in d.keys():
+                
+                print('duplicate value found!')
+            if url not in d.keys():
+                d[url] = cosine_similarity(desc_matrix)[0][1]    
 
         sorted_d = [(k,v) for k, v in sorted(list(d.items()), key = lambda x : x[1])][::-1]
         print(sorted_d[:5])
         self.suggested_job_listings = sorted_d[:5]
+        return self.suggested_job_listings

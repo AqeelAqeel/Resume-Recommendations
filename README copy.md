@@ -2,31 +2,6 @@
   <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/logo-shadow.png" alt="Logo" width="150" height="150" />
 </p>
 <h1 align="center">@Resume Recommender</h1>
-<p align="center">
-		<a href="https://npmcharts.com/compare/@appnest/readme?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/@appnest/readme.svg" height="20"/></a>
-<a href="https://www.npmjs.com/package/@appnest/readme"><img alt="NPM Version" src="https://img.shields.io/npm/v/@appnest/readme.svg" height="20"/></a>
-<a href="https://david-dm.org/andreasbm/readme"><img alt="Dependencies" src="https://img.shields.io/david/andreasbm/readme.svg" height="20"/></a>
-<a href="https://github.com/andreasbm/readme/graphs/contributors"><img alt="Contributors" src="https://img.shields.io/github/contributors/andreasbm/readme.svg" height="20"/></a>
-<a href="https://github.com/badges/shields"><img alt="Custom badge" src="https://img.shields.io/badge/custom-badge-f39f37.svg" height="20"/></a>
-<a href="https://github.com/andreasbm/readme/graphs/commit-activity"><img alt="Maintained" src="https://img.shields.io/badge/Maintained%3F-yes-green.svg" height="20"/></a>
-	</p>
-
-<p align="center">
-  <b>Automatically generate a list of keywords to improve your resume and the 5 active listings you are the greatest match for.</b></br>
-  <sub>Use this readme generator to easily generate beautiful readme's like this one! Simply extend your <code>package.json</code> and create a readme blueprint. On Github, the README file is like the landing page of your website because it is the first thing visitors see. You want to make a good first impression.<sub>
-</p>
-
-<br />
-
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/demo.gif" alt="Demo" width="800" />
-</p>
-
-* **Simple**: Extremely simple to use - so simple that it almost feels like magic!
-* **Powerful**: Customize almost everything - add your own templates and variables if you like
-* **Awesome**: The tool you don't know you need before you have many different repositories that all need maintenance
-
 
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#table-of-contents)
@@ -89,10 +64,14 @@ The 6 labels were:
 job_titles = 'Recruiter','Data Scientist', 'Financial Analyst', 'Physician', 'Underwriter', 'Chemical Engineer'
 ```
 
-The scraper 
+The features for the dataset were the job URL, location, title, and description
+
+The scraper grabbed the entirety of the HTML contents of each URL to a job listing on www.indeed.com
+
 The scraper source code can be found in the `Indeed-Job_Scraper` file. 
 
 
+![image](images/jobscan-io-matc.PNG)
 
 ## Job Dataset Value Counts
 
@@ -105,46 +84,42 @@ The scraper source code can be found in the `Indeed-Job_Scraper` file.
 | Underwriter       | 1403     |
 | Chemical Engineer | 1028     |
 
-
+![image](images/Value-Counts.png)
 
 ## Data Processing
 
-Insert NLP Procedures here
+
+The raw HTML was converted into text and then cleaned with lemmatization, stemming, removing punctuation, and lowering alphabet case.
+
 
 NLP Procedures were used on the input text data to convert objects into vectors, dictionaries and symbols which can be handled very effectively using python library tools. Many operations such as searching, clustering, and keyword extraction were all done using very simple data structures, such as feature vectors.
 
+## Cluster Analysys
 
-Run the `node_modules/.bin/readme generate` command and a README file will be generated for you. If you want to go into depth with the readme command, check out the following options or write `node_modules/.bin/readme generate -h` in your terminal if that's your cup of tea.
+Based on the shown disparity between principal and secondary components, we can already see definitive distinction between all of the job classses. This intuitively makes sense as "Physician" role is drastically different than that of a "Recruiter" role.
 
+![image](images/PCA-Graph.png))
 
-
-
-## Data Visuals
-
-Put charts and EDA stuff here
-
-Plot distribution chart
-
-PCA chart
-[]
-[]
-[]
-
-To configure this library you'll need to create a `blueprint.json` file. This file is the configuration for the templates we are going to take a look at in the next section. If you want to interpolate values from the configuration file into your README file you can simply reference them without a scope. Eg. if you have the field "link" in your `blueprint.json` you can write `{{ link }}` to reference it.
-
-Great. Now that we have the basics covered, let's continue and see how you can use templates!
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#templates)
 
 # ➤ The Model
 
-If you have come this far you are probably interested to figure out how to use README templates. This library comes with a set of pre-defined templates to make your readme awesome, but you can of course create your own. More about that later, let's not get ahead of our self just yet.
-
-Utilized sklearn library built-in models to predict job titles given job descriptions. All of the models when hypertuned performed very strongly, with Logistic Regression being the top choice. 
+I utilized sklearn library built-in models to predict job titles given job descriptions. All of the models when hypertuned performed very strongly, with **Logistic Regression being the top choice.**
 
 ## Performance Comparison
 
-| RandomForestClassifier(max_depth=3, n_estimators=200)  | Precision | Recall | F1-Score |
+**Baseline of 22.5% accuracy** computed by highest value count of Recruiter 2,042 / 9,055 total values.
+
+
+The computer learns through numerically interpreting data; finding distances between the features, which are words in the case. However, english language and human communication isn’t numerically interpreted.
+
+Logistic regression focuses more on probabilistic learning as opposed to linear SVC which is deterministic. Linear SVC tries to find the “best” margin (distance between the line and the support vectors) that separates the classes and thus reduces the risk of error on the data.
+
+
+
+
+| RandomForestClassifier | Precision | Recall | F1-Score |
 |---------------------------------------------------------------------------------------------------------------|-----------|--------|----------|
 | accuracy                                                                                                      |           |        | 0.86     |
 | macro average                                                                                                 | 0.84      | 0.92   | 0.87     |
@@ -168,12 +143,16 @@ Utilized sklearn library built-in models to predict job titles given job descrip
 | macro average                                                                                                 | 0.96      | 0.96   | 0.97     |
 | weighted average                                                                                              | 0.97      | 0.96   | 0.97     |
 
-The models were cross validated across 10 K-Folds; 
+The models were cross validated across 10 K-Folds and subsequently hypertuned.
 
 
 ## Outputs
 
-Keyword suggestions
+**Keyword suggestions**
+
+The model first predicts the occupation type with a resume input. Then, the model parses through all of the unique words in the resume input text and returns suggested keywords based on what words that are not in the resume input text but in the top keywords for that occupation type. 
+
+![image](images/DS-wordcloud.png))
 
 Job Listing recommendations
 
@@ -184,10 +163,19 @@ Job Listing recommendations
 
 Deployed model using streamlit.io as a python-friendly front-end web development tool. 
 
+The model takes an input text, directing the user to copy and paste their resume contents into the widget. 
+
+From there, the user then is shown the suggested keywords for their clasified occupation and links to the top 5 active job postings they are semantically the best fit for on www.indeed.com
+
+
 
 ## Results Display
 
 Add content and screenshot of displaying results page
+
+| ![image](images/webapp1.PNG)
+| ![image](images/webapp2.PNG)
+
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#table-of-contents)
 
@@ -198,15 +186,25 @@ Add content and screenshot of displaying results page
 
 ## Future Undertakings
 
+1. Having more data
+
+- This model is limited to the backend database of the scraped ~9,000 URLs. I would like job descriptions and labels across various domains and fields to serve a wider range of users. 
+
+2. Better resume sectionalizing 
+
+- Each piece of data and input resumes are a single block of text. In reality, humans parse through resumes by section. Feeding in different associations to a recognized 'education' section versus a 'work experience' section is crucial.  
+
+3. Recurrent Neural Network 
+
+- RNNs have a more “natural” for modeling sequential textual data, especially for the tasks of modeling serialization information, and learning the long-span relations or global semantic representation.
 
 
-## Gratitude 
 
-## Reference Material
+# Contributors
 
-## Contributors
 
-| [<img alt="Andreas Mehlsen" src="https://avatars1.githubusercontent.com/u/6267397?s=460&v=4" width="100">](https://twitter.com/andreasmehlsen) | [<img alt="You?" src="https://joeschmoe.io/api/v1/random" width="100">](https://github.com/andreasbm/readme/blob/master/CONTRIBUTING.md) |
 |:--------------------------------------------------:|:--------------------------------------------------:|
-| [Andreas Mehlsen](https://twitter.com/andreasmehlsen)
+| ![Aqeel Ali](images/AuthorPic.jpg)
+	
+Aqeel Ali
 
