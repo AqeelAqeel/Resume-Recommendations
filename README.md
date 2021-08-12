@@ -1,350 +1,210 @@
-# The-Right-Resume
-Using ML techniques to improve resume based on job descriptions
-
-# Project Motivations
-
-Returning a higher yield on job application submittals
-- gettign a 25% job match on jobscan,io
+<!-- ⚠️ This README has been generated from the file(s) "blueprint.md" ⚠️--><p align="center">
+  <img src="https://raw.githubusercontent.com/andreasbm/readme/master/assets/logo-shadow.png" alt="Logo" width="150" height="150" />
+</p>
+<h1 align="center">@Resume Recommender</h1>
 
 
-# Check list to do
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#table-of-contents)
 
-coding needs
-- merging univ recruiter and recruiter column
-- understanding why % accuracy isnt improving with way more data.
-- how to hypertune parameters
-- setup if statements for a 'set' of each list of words per 
-- - figure out a way to get the list of words and how to customize 'stop words' or deduct from the list
+# ➤ Table of Contents
 
-
-develop model outputs
-- % match to titles, words needed to show, and top jobs currently a strong fit for
-    - need to grab the html or job desc OF that url ... yomp...
-- - if a word is not in the 'set' of terms in the top 100 for each role... suggest it ... 
-
-Front end web app dev
-
-web app model deployment
-
-slide deck / presentation
-    - images of web app scraper process
-    - images / flowchart for how the model works
-        - look up explanations of text classification for the various models to siphon
-
-# Working Notes
-
-## Day 1-3: 8/2 ~ 8/4
-open source indeed scraper was only grabbing job previews. had to build a scraper that would extract the url's of te full job posting, and then navigate to each url and grab the contents of the website.
-- resulted in issues
-
-Attaining data has been a hurdle
-- used apiscraper.com and got a free trial which gave thousands of url requests for free
-- after all was said and done, attained a data
-- indeed still had some sort of issues even with thhe proxy and i only could pull a couple hundred items at a time. 
-- had classmates run my scraper for me after getting temporarily ip banned and my free proxy token stopped working as well. 
-
-## Day 4: 8/5
-
-Started finally getting a grasp of a way to tie in original project motivations.
-
-Training the model to have distinguished profiles for each class/label (in this case, the job title), and utilize the profiles to provide a similarity matrix of the resume to each individual. As well as what words would better fit to 
-- evaluating the model by testing it against its predictive power of classifying job titles after training it on job descriptions. 
+* [➤ Project Overview](#Project-Overview)
+* [➤ Project Motivations](#Project-Motivations)
+* [➤ The Dataset & EDA](#The-Dataset-&-EDA)
+	* [Attaining Data](##Attaining-Data)
+	* [The Dataset](##The-Dataset)
+	* [Data Processing](#Data-Processing)
+  * [Data Visuals](#Data-Visuals)
+* [➤ The Model](#-templates)
+	* [Performance Comparison](#Performance-Comparison)
+	* [Outputs](#logo)
+* [➤ Web App Dashboard](#-contributors)
+	* [License](#license)
+* [➤ Closing Remarks](#-license)
+	* [Future Undertakings](#Future-Undertakings)
+	* [Gratitude](#license)
+  * [Contributors](#contributors)
+	* [Reference Material](#Reading-Material)
 
 
-early attempts at running a model.
 
-Roadblocks:
-- scraped some more data in the morning
-- my dataset of 1977 entries was reduced to 1354
-- problems with my term frequency detection
-- * there seems to be an issue with some bigrams and unigrams feeding into the successive classes/labels...
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#installation)
 
-## Day 5: 8/6
+## ➤ Project Overview
 
-Finally got through pushing quite a bit of the needle forward in terms of progress. 
-- got situated with the dataset i was working with, a couple hundred descriptions for each class
-- ran some initial models
-ds
+```python
+print("Hello Reader!")
 ```
-# 'chemical+engineer':
-  . Most correlated unigrams:
-. project
-. design
-. process
-. engineer
-. engineering
-  . Most correlated bigrams:
-. related field
-. genetic information
-. fast pace
-. full time
-. problem solve
-# 'data+scientist':
-  . Most correlated unigrams:
-. insight
-. learn
-. model
-. science
-. data
-  . Most correlated bigrams:
-. fast pace
-. bachelor degree
-. full time
-. problem solve
-. related field
-# 'financial+analyst':
-  . Most correlated unigrams:
-. budget
-. reporting
-. accounting
-. finance
-. financial
-  . Most correlated bigrams:
-. full time
-. fast pace
-. communication skill
-. related field
-. bachelor degree
-# 'physician':
-  . Most correlated unigrams:
-. license
-. health
-. physician
-. patient
-. care
-  . Most correlated bigrams:
-. fast pace
-. communication skill
-. related field
-. bachelor degree
-. full time
-# 'recruiter':
-  . Most correlated unigrams:
-. interview
-. source
-. hire
-. talent
-. recruiting
-  . Most correlated bigrams:
-. full time
-. problem solve
-. related field
-. job description
-. fast pace
-# 'underwriter':
-  . Most correlated unigrams:
-. policy
-. relationship
-. line
-. risk
-. insurance
-  . Most correlated bigrams:
-. fast pace
-. full time
-. related field
-. communication skill
-. bachelor degree
+
+Resume Reccomender leverages a Natural Language Processing technology stack in Python to match an input string of text (denoted as a "Resume") to needed keywords to better match job descriptions, as well as provide the URL of the top 5 closest job matches based on listing contents from the database. The database consists of over 6,000 job postings from Indeed.com that are currently active (as of August 2021) and was acquired through webscraper contained within this repo's `/src/jupyter-notebooks` folder. Project prepared by Aqeel Ali for the purpose and presentation of the final capstone project for Galvanize Data Science Full-time Immersive Bootcamp Remote Pacific Cohort #7. 
+
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#getting-started-quick)
+
+## ➤ Project Motivations
+
+As a current full-time job seeker, Aqeel (author) was experiencing troubling low yield results on applications that appeared, at first glance, to be a great fit. 
+
+Aqeel had discovered that candidates, no matter how qualified they are, slip through the cracks of all industries' mass adoption of Applicant Track Systems. Applicant Tracking Systems have gained massive popularity across multiple domains and use cases in organizational management, talent solutions, and much more. Aqeel realized him, and oter job seekers, were up against artificial intelligence programs designed to weed out seemingly less qualified or fit applicants. Job applications companies and hiring staff are inbounded with on a daily basis, and this tool serves a great purpose for expediting the hiring process in a time and cost efficient matter for companies.
+
+Upon discovering that the ATS filtration systems base a lot of decision making power with the contents of resumes and cover letters, Aqeel set out to develop a tool for job seekers and the like to see how their resume could be improved with the addition of suggested keywords against many currently active job listings, and what job listings they are semantically the best fit for. 
+
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#getting-started-slower)
+
+# ➤ The Dataset & EDA
+
+This getting started guide is a little bit longer, but will give you some superpowers. Spend a minute reading this getting started guide and you'll have the best README file in your town very soon.
+
+## Attaining Data
+
+The dataset consits of 9,055 rows of data across 6 labels. These labels, the job titles, serve as the classes that the model will be trained to predict. 
+
+The 6 labels were:
+
+```python
+job_titles = 'Recruiter','Data Scientist', 'Financial Analyst', 'Physician', 'Underwriter', 'Chemical Engineer'
 ```
-# Model Performance Analysis
 
-https://towardsdatascience.com/support-vector-classifiers-and-logistic-regression-similarity-97ff06aa6ec3
+The features for the dataset were the job URL, location, title, and description
 
-## Linear SVC vs. Logistic Regression 
-- 
+The scraper grabbed the entirety of the HTML contents of each URL to a job listing on www.indeed.com
 
-# Future Steps 
-
-# Closing Remarks / Conclusion 
-Multitude of classmates, DSR's and instructors support on this
-- last but not least I wanna thank me
+The scraper source code can be found in the `Indeed-Job_Scraper` file. 
 
 
+![image](images/jobscan-io-matc.PNG)
 
-_____
+## Job Dataset Value Counts
 
-Messy parts of data:
+| Job Titles        | Quantity |
+|-------------------|----------|
+| Recruiter         | 2042     |
+| Data Scientist    | 1597     |
+| Financial Analyst | 1523     |
+| Physician         | 1462     |
+| Underwriter       | 1403     |
+| Chemical Engineer | 1028     |
 
-the '\n' was replaced when scraping in the HTML with an empty string. no spacing. this caused many words to merge together and the interpreter to read these unnaturally joined words as one. 
+![image](images/Value-Counts.png)
 
-
-___
-# Model Performance
-
-## After Vectorizer Parameter Inputs
-
-Pipeline(steps=[('vect', CountVectorizer()), ('tfidf', TfidfTransformer()),
-                ('clf',
-                 RandomForestClassifier(max_depth=3, n_estimators=200,
-                                        random_state=0))])
-0.8643067846607669
-                   precision    recall  f1-score   support
-
-chemical+engineer       0.82      1.00      0.90        40
-   data+scientist       0.83      1.00      0.90        38
-financial+analyst       0.99      0.71      0.83       121
-        physician       0.97      0.84      0.90        67
-        recruiter       0.80      1.00      0.89        44
-      underwriter       0.66      1.00      0.79        29
-
-         accuracy                           0.86       339
-        macro avg       0.84      0.92      0.87       339
-     weighted avg       0.89      0.86      0.86       339
-
-Pipeline(steps=[('vect', CountVectorizer()), ('tfidf', TfidfTransformer()),
-                ('clf', LinearSVC())])
-0.9793510324483776
-                   precision    recall  f1-score   support
-
-chemical+engineer       1.00      0.98      0.99        50
-   data+scientist       1.00      0.94      0.97        49
-financial+analyst       0.94      1.00      0.97        82
-        physician       1.00      0.97      0.98        60
-        recruiter       1.00      0.98      0.99        56
-      underwriter       0.95      1.00      0.98        42
-
-         accuracy                           0.98       339
-        macro avg       0.98      0.98      0.98       339
-     weighted avg       0.98      0.98      0.98       339
-
-Pipeline(steps=[('vect', CountVectorizer()), ('tfidf', TfidfTransformer()),
-                ('clf', MultinomialNB())])
-0.7315634218289085
-                   precision    recall  f1-score   support
-
-chemical+engineer       0.45      1.00      0.62        22
-   data+scientist       0.37      1.00      0.54        17
-financial+analyst       0.99      0.49      0.65       176
-        physician       0.90      0.98      0.94        53
-        recruiter       0.73      1.00      0.84        40
-      underwriter       0.70      1.00      0.83        31
-
-         accuracy                           0.73       339
-        macro avg       0.69      0.91      0.74       339
-     weighted avg       0.85      0.73      0.73       339
-
-Pipeline(steps=[('vect', CountVectorizer()), ('tfidf', TfidfTransformer()),
-                ('clf', LogisticRegression(random_state=0))])
-0.9646017699115044
-                   precision    recall  f1-score   support
-
-chemical+engineer       1.00      1.00      1.00        49
-   data+scientist       0.98      0.94      0.96        48
-financial+analyst       0.94      0.95      0.95        86
-        physician       0.97      0.93      0.95        60
-        recruiter       0.98      0.98      0.98        55
-      underwriter       0.93      1.00      0.96        41
-
-         accuracy                           0.96       339
-        macro avg       0.97      0.97      0.97       339
-     weighted avg       0.97      0.96      0.96       339
+## Data Processing
 
 
-## After Vectorizer Parameter Inputs
+The raw HTML was converted into text and then cleaned with lemmatization, stemming, removing punctuation, and lowering alphabet case.
 
-Pipeline(steps=[('vect',
-                 CountVectorizer(max_df=0.75, max_features=5000, min_df=0.05,
-                                 ngram_range=(1, 2),
-                                 stop_words={'000', 'a', 'ability', 'about',
-                                             'above', 'access', 'accomodation',
-                                             'action', 'affirmative', 'after',
-                                             'again', 'against', 'age', 'ain',
-                                             'all', 'also', 'am', 'an', 'and',
-                                             'any', 'applicant', 'are', 'area',
-                                             'aren', "aren't", 'as', 'at', 'be',
-                                             'because', 'been', ...})),
-                ('tfidf', TfidfTransformer()),
-                ('clf',
-                 RandomForestClassifier(max_depth=3, n_estimators=200,
-                                        random_state=0))])
-0.943952802359882
-                   precision    recall  f1-score   support
 
-chemical+engineer       0.98      1.00      0.99        43
-   data+scientist       0.91      1.00      0.95        40
-financial+analyst       0.98      0.92      0.95        97
-        physician       1.00      0.83      0.90        63
-        recruiter       0.92      1.00      0.96        58
-      underwriter       0.84      1.00      0.92        38
+NLP Procedures were used on the input text data to convert objects into vectors, dictionaries and symbols which can be handled very effectively using python library tools. Many operations such as searching, clustering, and keyword extraction were all done using very simple data structures, such as feature vectors.
 
-         accuracy                           0.94       339
-        macro avg       0.94      0.96      0.94       339
-     weighted avg       0.95      0.94      0.94       339
+## Cluster Analysys
 
-Pipeline(steps=[('vect',
-                 CountVectorizer(max_df=0.75, max_features=5000, min_df=0.05,
-                                 ngram_range=(1, 2),
-                                 stop_words={'000', 'a', 'ability', 'about',
-                                             'above', 'access', 'accomodation',
-                                             'action', 'affirmative', 'after',
-                                             'again', 'against', 'age', 'ain',
-                                             'all', 'also', 'am', 'an', 'and',
-                                             'any', 'applicant', 'are', 'area',
-                                             'aren', "aren't", 'as', 'at', 'be',
-                                             'because', 'been', ...})),
-                ('tfidf', TfidfTransformer()), ('clf', LinearSVC())])
-0.9616519174041298
-                   precision    recall  f1-score   support
+Based on the shown disparity between principal and secondary components, we can already see definitive distinction between all of the job classses. This intuitively makes sense as "Physician" role is drastically different than that of a "Recruiter" role.
 
-chemical+engineer       0.95      0.95      0.95        44
-   data+scientist       0.95      0.93      0.94        45
-financial+analyst       0.97      0.99      0.98        89
-        physician       0.94      0.96      0.95        51
-        recruiter       0.98      0.95      0.97        65
-      underwriter       0.96      0.96      0.96        45
+![image](images/PCA-Graph.png))
 
-         accuracy                           0.96       339
-        macro avg       0.96      0.96      0.96       339
-     weighted avg       0.96      0.96      0.96       339
 
-Pipeline(steps=[('vect',
-                 CountVectorizer(max_df=0.75, max_features=5000, min_df=0.05,
-                                 ngram_range=(1, 2),
-                                 stop_words={'000', 'a', 'ability', 'about',
-                                             'above', 'access', 'accomodation',
-                                             'action', 'affirmative', 'after',
-                                             'again', 'against', 'age', 'ain',
-                                             'all', 'also', 'am', 'an', 'and',
-                                             'any', 'applicant', 'are', 'area',
-                                             'aren', "aren't", 'as', 'at', 'be',
-                                             'because', 'been', ...})),
-                ('tfidf', TfidfTransformer()), ('clf', MultinomialNB())])
-0.9587020648967551
-                   precision    recall  f1-score   support
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#templates)
 
-chemical+engineer       0.98      0.96      0.97        45
-   data+scientist       0.93      0.98      0.95        42
-financial+analyst       0.97      0.96      0.96        92
-        physician       0.96      0.94      0.95        53
-        recruiter       0.98      0.95      0.97        65
-      underwriter       0.91      0.98      0.94        42
+# ➤ The Model
 
-         accuracy                           0.96       339
-        macro avg       0.96      0.96      0.96       339
-     weighted avg       0.96      0.96      0.96       339
+I utilized sklearn library built-in models to predict job titles given job descriptions. All of the models when hypertuned performed very strongly, with **Logistic Regression being the top choice.**
 
-Pipeline(steps=[('vect',
-                 CountVectorizer(max_df=0.75, max_features=5000, min_df=0.05,
-                                 ngram_range=(1, 2),
-                                 stop_words={'000', 'a', 'ability', 'about',
-                                             'above', 'access', 'accomodation',
-                                             'action', 'affirmative', 'after',
-                                             'again', 'against', 'age', 'ain',
-                                             'all', 'also', 'am', 'an', 'and',
-                                             'any', 'applicant', 'are', 'area',
-                                             'aren', "aren't", 'as', 'at', 'be',
-                                             'because', 'been', ...})),
-                ('tfidf', TfidfTransformer()),
-                ('clf', LogisticRegression(random_state=0))])
-0.9734513274336283
-                   precision    recall  f1-score   support
+## Performance Comparison
 
-chemical+engineer       0.98      0.98      0.98        44
-   data+scientist       0.95      0.95      0.95        44
-financial+analyst       0.98      0.99      0.98        90
-        physician       0.98      0.96      0.97        53
-        recruiter       0.98      0.95      0.97        65
-      underwriter       0.96      1.00      0.98        43
+**Baseline of 22.5% accuracy** computed by highest value count of Recruiter 2,042 / 9,055 total values.
 
-         accuracy                           0.97       339
-        macro avg       0.97      0.97      0.97       339
-     weighted avg       0.97      0.97      0.97       339
+
+The computer learns through numerically interpreting data; finding distances between the features, which are words in the case. However, english language and human communication isn’t numerically interpreted.
+
+Logistic regression focuses more on probabilistic learning as opposed to linear SVC which is deterministic. Linear SVC tries to find the “best” margin (distance between the line and the support vectors) that separates the classes and thus reduces the risk of error on the data.
+
+
+
+
+| RandomForestClassifier | Precision | Recall | F1-Score |
+|---------------------------------------------------------------------------------------------------------------|-----------|--------|----------|
+| accuracy                                                                                                      |           |        | 0.86     |
+| macro average                                                                                                 | 0.84      | 0.92   | 0.87     |
+| weighted average                                                                                              | 0.89      | 0.86   | 0.86     |
+
+| LinearSVC                                          | Precision | Recall | F1-Score |
+|---------------------------------------------------------------------------------------------------------------|-----------|--------|----------|
+| accuracy                                                                                                      |           |        | 0.95     |
+| macro average                                                                                                 | 0.95      | 0.95   | 0.95     |
+| weighted average                                                                                              | 0.95      | 0.95   | 0.95     |
+
+| MultinomialNB                                        | Precision | Recall | F1-Score |
+|---------------------------------------------------------------------------------------------------------------|-----------|--------|----------|
+| accuracy                                                                                                      |           |        | 0.86     |
+| macro average                                                                                                 | 0.84      | 0.92   | 0.87     |
+| weighted average                                                                                              | 0.89      | 0.86   | 0.86     |
+
+| Logistic Regression | Precision | Recall | F1-Score |
+|---------------------------------------------------------------------------------------------------------------|-----------|--------|----------|
+| accuracy                                                                                                      |           |        | 0.97     |
+| macro average                                                                                                 | 0.96      | 0.96   | 0.97     |
+| weighted average                                                                                              | 0.97      | 0.96   | 0.97     |
+
+The models were cross validated across 10 K-Folds and subsequently hypertuned.
+
+
+## Outputs
+
+**Keyword suggestions**
+
+The model first predicts the occupation type with a resume input. Then, the model parses through all of the unique words in the resume input text and returns suggested keywords based on what words that are not in the resume input text but in the top keywords for that occupation type. 
+
+![image](images/DS-wordcloud.png))
+
+Job Listing recommendations
+
+
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#table-of-contents)
+
+# Web App Dashboard 
+
+Deployed model using streamlit.io as a python-friendly front-end web development tool. 
+
+The model takes an input text, directing the user to copy and paste their resume contents into the widget. 
+
+From there, the user then is shown the suggested keywords for their clasified occupation and links to the top 5 active job postings they are semantically the best fit for on www.indeed.com
+
+
+
+## Results Display
+
+Add content and screenshot of displaying results page
+
+| ![image](images/webapp1.PNG)
+| ![image](images/webapp2.PNG)
+
+
+[![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#table-of-contents)
+
+
+# Closing Remarks
+
+
+
+## Future Undertakings
+
+1. Having more data
+
+- This model is limited to the backend database of the scraped ~9,000 URLs. I would like job descriptions and labels across various domains and fields to serve a wider range of users. 
+
+2. Better resume sectionalizing 
+
+- Each piece of data and input resumes are a single block of text. In reality, humans parse through resumes by section. Feeding in different associations to a recognized 'education' section versus a 'work experience' section is crucial.  
+
+3. Recurrent Neural Network 
+
+- RNNs have a more “natural” for modeling sequential textual data, especially for the tasks of modeling serialization information, and learning the long-span relations or global semantic representation.
+
+
+
+# Contributors
+
+
+|:--------------------------------------------------:|:--------------------------------------------------:|
+| ![Aqeel Ali](images/AuthorPic.jpg)
+	
+Aqeel Ali
+
