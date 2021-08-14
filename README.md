@@ -52,8 +52,6 @@ Upon discovering that the ATS filtration systems base a lot of decision making p
 
 # ➤ The Dataset & EDA
 
-This getting started guide is a little bit longer, but will give you some superpowers. Spend a minute reading this getting started guide and you'll have the best README file in your town very soon.
-
 ## Attaining Data
 
 The dataset consits of 9,055 rows of data across 6 labels. These labels, the job titles, serve as the classes that the model will be trained to predict. 
@@ -64,9 +62,10 @@ The 6 labels were:
 job_titles = 'Recruiter','Data Scientist', 'Financial Analyst', 'Physician', 'Underwriter', 'Chemical Engineer'
 ```
 
-The features for the dataset were the job URL, location, title, and description
+The **columns** for the dataset were: job URL, location, title, and description
 
 The scraper grabbed the entirety of the HTML contents of each URL to a job listing on www.indeed.com
+- These served as the descriptions. 
 
 The scraper source code can be found in the `Indeed-Job_Scraper` file. 
 
@@ -145,7 +144,6 @@ Logistic regression focuses more on probabilistic learning as opposed to linear 
 
 The models were cross validated across 10 K-Folds and subsequently hypertuned.
 
-
 ## Outputs
 
 **Keyword suggestions**
@@ -154,14 +152,13 @@ The model first predicts the occupation type with a resume input. Then, the mode
 
 ![image](images/DS-wordcloud.png))
 
-Job Listing recommendations
 
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#table-of-contents)
 
 # Web App Dashboard 
 
-Deployed model using streamlit.io as a python-friendly front-end web development tool. 
+The model was deployed using streamlit.io as a python-friendly front-end web development tool. 
 
 The model takes an input text, directing the user to copy and paste their resume contents into the widget. 
 
@@ -171,9 +168,12 @@ From there, the user then is shown the suggested keywords for their clasified oc
 
 ## Results Display
 
-Add content and screenshot of displaying results page
+User pastes the text of their resume into a text-input field.
 
 | ![image](images/webapp1.PNG)
+
+The results display the top words and links to active postings on www.indeed.com that contain the most semantic similarity.
+
 | ![image](images/webapp2.PNG)
 
 

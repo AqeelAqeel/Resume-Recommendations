@@ -118,7 +118,7 @@ class MyApp():
 
     # Look through list of needed words
     # If any word stems begin with list of words to change, change it to a understandable output.
-        start_of_words_to_change = ["financ","analy","engineer", "model",]
+        start_of_words_to_change = ["financ","analy","engineer", "model","underwrit"]
         for i,word in enumerate(suggested_words):
             for check in start_of_words_to_change:
                 if word.startswith(check):
@@ -127,6 +127,9 @@ class MyApp():
 
                     elif check == "analy":
                         suggested_words[i] = "Variations of the word: analysis"
+                    elif check == "underwrit":
+                        if "Variations of the word: underwriter" not in suggested_words:
+                            suggested_words[i] = "Variations of the word: underwriter"
                     else:
                         suggested_words[i] = f"Variations of the word: {check}"
 
