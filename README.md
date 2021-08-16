@@ -9,18 +9,17 @@
 # ➤ Table of Contents
 
 * [➤ Project Overview](#Project-Overview)
+	* [Live Presentation Visual Slide Deck](https://docs.google.com/presentation/d/1UueslKIxUuV2_6U7hoaR7u4wuIjA0fIgsdS9tiLBDt0/edit#slide=id.ge9365121b8_0_56)
 * [➤ Project Motivations](#Project-Motivations)
 * [➤ The Dataset & EDA](#The-Dataset-&-EDA)
 	* [Attaining Data](##Attaining-Data)
 	* [The Dataset](##The-Dataset)
 	* [Data Processing](#Data-Processing)
-  * [Data Visuals](#Data-Visuals)
 * [➤ The Model](#-templates)
 	* [Performance Comparison](#Performance-Comparison)
 	* [Outputs](#logo)
-* [➤ Web App Dashboard](#-contributors)
-	* [License](#license)
-* [➤ Closing Remarks](#-license)
+* [➤ Web App Dashboard](#Web-App-Dashboard )
+* [➤ Closing Remarks](#Closing-Remarks)
 	* [Future Undertakings](#Future-Undertakings)
 	* [Gratitude](#license)
   * [Contributors](#contributors)
@@ -37,6 +36,11 @@ print("Hello Reader!")
 ```
 
 Resume Reccomender leverages a Natural Language Processing technology stack in Python to match an input string of text (denoted as a "Resume") to needed keywords to better match job descriptions, as well as provide the URL of the top 5 closest job matches based on listing contents from the database. The database consists of over 6,000 job postings from Indeed.com that are currently active (as of August 2021) and was acquired through webscraper contained within this repo's `/src/jupyter-notebooks` folder. Project prepared by Aqeel Ali for the purpose and presentation of the final capstone project for Galvanize Data Science Full-time Immersive Bootcamp Remote Pacific Cohort #7. 
+
+# Link to Slide Deck
+
+
+[Live Presentation Visual Slide Deck](https://docs.google.com/presentation/d/1UueslKIxUuV2_6U7hoaR7u4wuIjA0fIgsdS9tiLBDt0/edit#slide=id.ge9365121b8_0_56)
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#getting-started-quick)
 
@@ -97,7 +101,7 @@ NLP Procedures were used on the input text data to convert objects into vectors,
 
 Based on the shown disparity between principal and secondary components, we can already see definitive distinction between all of the job classses. This intuitively makes sense as "Physician" role is drastically different than that of a "Recruiter" role.
 
-![image](images/PCA-Graph.png))
+![image](images/PCA-Graph.png)
 
 
 [![-----------------------------------------------------](https://raw.githubusercontent.com/andreasbm/readme/master/assets/lines/colored.png)](#templates)
@@ -181,8 +185,6 @@ The results display the top words and links to active postings on www.indeed.com
 
 
 # Closing Remarks
-
-
 
 ## Future Undertakings
 
